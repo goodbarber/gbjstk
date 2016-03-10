@@ -30,7 +30,7 @@ function gbCheckHTML5Mode () {
     try {
         return window.parent && window.self !== window.parent && window.parent.isGbHTML5;
     } catch (e) {
-    	//No access to parent iframe = CORS iframe = not HTML5 (plugin iframes use same domain).
+    	/*No access to parent iframe = CORS iframe = not HTML5 (plugin iframes use same domain).*/
         return false;
     }
 }
@@ -137,7 +137,7 @@ function gbPostRequest ( path, getParams, postParams )
 
 		if (gbUserInfo.platform=='android')
 		{
-			Android.post (formAction, postParams);
+			Android.post (formAction, JSON.stringify(postParams));
 		}
 		else
 		{
@@ -431,4 +431,15 @@ function gbGetPreference ( key )
 		gbDidSuccessGetPreference ( key, "" );
 
 	gbGetRequest ( "goodbarber://getpreference", { "key":key } );
+}
+
+/* Function : gbGetUser
+*  Get the currently connected user. Will call the fail handler gbDidFailGetUser if no user is connected.
+*/
+function gbGetUser ()
+{
+	if ( gbDevMode )
+		gbDidSuccessGetUser ( { id:0, email:"user@example.com", attribs:{ displayName:"Example User" } } );
+
+	gbGetRequest ( "goodbarber://getuser" );
 }
